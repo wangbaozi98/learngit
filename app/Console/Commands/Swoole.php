@@ -71,6 +71,7 @@ class Swoole extends Command
      */
     private function start()
     {
+        dd(config('swoole.'));
         $ws = new \swoole_websocket_server(config('swoole.host'), config('swoole.port'));
         $ws->on('open', function ($ws, $request) {
 // todo something
