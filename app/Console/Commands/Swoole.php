@@ -119,17 +119,17 @@ $data = json_decode($frame->data, true);
         });
         $ws->on('close', function ($ws, $fd) {
             var_dump($fd);
-            $ws->push($fd, $fd.' is leave');
-//            获取fd所对应的房间号
-            $room_id = Redis::hget('room', $fd);
-            $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
-            Redis::zrem("room:{$room_id}", $fd);
-            $memberInfo = [
-                'online' => Redis::zcard("room:{$room_id}"),
-                'all' => $this->room->where(['room_id' => $room_id, 'status' => 0])->count() + 1
-            ];
-            $this->sendAll($ws, $room_id, $user_id, $memberInfo,
-                'leave');
+            $ws->push(1, 'kiki is leave');
+////            获取fd所对应的房间号
+//            $room_id = Redis::hget('room', $fd);
+//            $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
+//            Redis::zrem("room:{$room_id}", $fd);
+//            $memberInfo = [
+//                'online' => Redis::zcard("room:{$room_id}"),
+//                'all' => $this->room->where(['room_id' => $room_id, 'status' => 0])->count() + 1
+//            ];
+//            $this->sendAll($ws, $room_id, $user_id, $memberInfo,
+//                'leave');
         });
         $ws->start();
     }
