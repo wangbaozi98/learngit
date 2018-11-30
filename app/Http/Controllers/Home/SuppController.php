@@ -33,7 +33,11 @@ class SuppController extends Controller
     //测试
     public function index(Request $request) {
         $params    = $request->all();
-        Redis::zadd("room_test:{$params['room_id']}", intval($params['user_id']), $params['fd']);
+        if (empty($params['type'])) {
+            Redis::zadd("room_test:{$params['room_id']}", intval($params['user_id']), $params['fd']);
+        } elseif($params['type'] == 'del') {
+            Redis::zrem("room_test:{$params['room_id']}", $params['fd']);
+        }
         var_dump($params);
         die();
 
