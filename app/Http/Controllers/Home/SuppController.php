@@ -33,6 +33,7 @@ class SuppController extends Controller
     //测试
     public function index() {
         echo '1111';
+        dd('ssss');
         die();
 
     }
