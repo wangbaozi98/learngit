@@ -119,7 +119,7 @@ $data = json_decode($frame->data, true);
         });
         $ws->on('close', function ($ws, $fd) {
             var_dump($fd);
-            exit();
+            $ws->push($fd, $fd.' is leave');
 //            获取fd所对应的房间号
             $room_id = Redis::hget('room', $fd);
             $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
