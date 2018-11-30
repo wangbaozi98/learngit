@@ -48,6 +48,9 @@ class SuppController extends Controller
         $params  = $request->all();
         $room_user_list = Redis::zRange("room_test:{$params['room_id']}", 0, -1);
         var_dump($room_user_list);
+
+
+        var_dump(Redis::zcard("room_test:{$params['room_id']}"));
         die();
 
     }
