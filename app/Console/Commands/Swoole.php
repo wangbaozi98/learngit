@@ -109,7 +109,7 @@ class Swoole extends Command
                     Message::create($message);
                     $this->sendAll($ws, $data['room_id'], $data['user_id'], $data['message']);
                     break;
-                case 'close':
+                default :
 //                    移除
                     Redis::zrem("room:{$data['room_id']}", $frame->fd);
                     break;
