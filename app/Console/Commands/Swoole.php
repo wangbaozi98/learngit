@@ -78,12 +78,10 @@ class Swoole extends Command
         //监听WebSocket消息事件
         $ws->on('message', function ($ws, $frame) {
 	    echo '111';
-var_dump($frame);
-            $ws->push($frame->fd, 'hello');
-
-$data = json_decode($frame->data, true);
+        var_dump($frame);
+        $data = json_decode($frame->data, true);
 	    echo "<pre>";
-	   var_dump($data);           
+	    var_dump($data);
 	    switch ($data['type']) {
                 case 'connect':
                     Redis::zadd("room:{$data['room_id']}", intval($data['user_id']), $frame->fd);
@@ -94,7 +92,7 @@ $data = json_decode($frame->data, true);
 //                    +1 是代表群主
                     $memberInfo = [
                         'online' => Redis::zcard("room:{$data['room_id']}"),
-                        'all' => $this->room->where(['room_id' => $data['room_id'], 'status' => 0])->count() + 1
+                        //'all' => $this->room->where(['room_id' => $data['room_id'], 'status' => 0])->count() + 1
                     ];
                     $this->sendAll($ws, $data['room_id'], $data['user_id'], $memberInfo,
                         'join');
