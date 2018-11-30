@@ -109,17 +109,20 @@ class Swoole extends Command
                     Message::create($message);
                     $this->sendAll($ws, $data['room_id'], $data['user_id'], $data['message']);
                     break;
-                default :
+                case 'close':
 //                    移除
                     Redis::zrem("room:{$data['room_id']}", $frame->fd);
                     break;
             }
         });
         $ws->on('close', function ($ws, $fd) {
-            var_dump($fd);
-            $ws->push(1, 'kiki is leave');
-////            获取fd所对应的房间号
-//            $room_id = Redis::hget('room', $fd);
+
+            //获取fd所对应的房间号
+            $room_id = Redis::hget('room', $fd);
+            echo $fd.'----'.$room_id;
+            Redis::zrem("room:{$room_id}", $fd);
+            $ws->push(1, "kiki_{$fd} is leave");
+
 //            $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
 //            Redis::zrem("room:{$room_id}", $fd);
 //            $memberInfo = [
