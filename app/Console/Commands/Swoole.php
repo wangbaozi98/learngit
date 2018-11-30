@@ -71,16 +71,18 @@ class Swoole extends Command
      */
     private function start()
     {
-        echo 'sssssssss';
-        dd(config('swoole'));
         $ws = new \swoole_websocket_server(config('swoole.host'), config('swoole.port'));
         $ws->on('open', function ($ws, $request) {
 // todo something
         });
         //监听WebSocket消息事件
         $ws->on('message', function ($ws, $frame) {
-            $data = json_decode($frame->data, true);
-            switch ($data['type']) {
+	    echo '111';
+var_dump($frame);            
+$data = json_decode($frame->data, true);
+	    echo "<pre>";
+	   var_dump($data);           
+	    switch ($data['type']) {
                 case 'connect':
                     Redis::zadd("room:{$data['room_id']}", intval($data['user_id']), $frame->fd);
 //                    同时使用hash标识fd在哪个房间
