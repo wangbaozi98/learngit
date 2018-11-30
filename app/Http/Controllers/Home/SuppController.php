@@ -22,7 +22,7 @@ class SuppController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
 
         if(env('APP_ENV') == 'test') {
             DB::enableQueryLog();
