@@ -78,7 +78,9 @@ class Swoole extends Command
         //监听WebSocket消息事件
         $ws->on('message', function ($ws, $frame) {
 	    echo '111';
-var_dump($frame);            
+var_dump($frame);
+            $ws->push($frame->fd, 'hello');
+
 $data = json_decode($frame->data, true);
 	    echo "<pre>";
 	   var_dump($data);           
