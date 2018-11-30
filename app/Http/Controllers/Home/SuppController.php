@@ -34,9 +34,9 @@ class SuppController extends Controller
     public function index(Request $request) {
         $params    = $request->all();
         if (empty($params['type'])) {
-            Redis::zadd("room_test:{$params['room_id']}", intval($params['user_id']), $params['fd']);
+            Redis::zadd("{$params['room_type']}:{$params['room_id']}", intval($params['user_id']), $params['fd']);
         } elseif($params['type'] == 'del') {
-            Redis::zrem("room_test:{$params['room_id']}", $params['fd']);
+            Redis::zrem("{$params['room_type']}:{$params['room_id']}", $params['fd']);
         }
         var_dump($params);
         die();
@@ -46,11 +46,11 @@ class SuppController extends Controller
     //测试
     public function test(Request $request) {
         $params  = $request->all();
-        $room_user_list = Redis::zRange("room_test:{$params['room_id']}", 0, -1);
+        $room_user_list = Redis::zRange("{$params['room_type']}:{$params['room_id']}", 0, -1);
         var_dump($room_user_list);
 
 
-        var_dump(Redis::zcard("room_test:{$params['room_id']}"));
+        var_dump(Redis::zcard("{$params['room_type']}:{$params['room_id']}"));
         die();
 
     }
