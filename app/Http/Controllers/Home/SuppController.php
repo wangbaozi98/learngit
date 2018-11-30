@@ -10,7 +10,7 @@ use Excel;
 use Auth;
 use Validator;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Redis;
 
 use Illuminate\Support\Facades\DB;
 
@@ -31,9 +31,19 @@ class SuppController extends Controller
 
 
     //测试
-    public function index() {
-        echo '1111';
-        dd('ssss');
+    public function index(Request $request) {
+        $params    = $request->all();
+        Redis::zadd("room_test:{$params['room_id']}", intval($params['user_id']), $params['fd']);
+        var_dump($params);
+        die();
+
+    }
+
+    //测试
+    public function test(Request $request) {
+        $params  = $request->all();
+        $room_user_list = Redis::zRange("room_test:{$params['room_id']}", 0, -1);
+        var_dump($room_user_list);
         die();
 
     }

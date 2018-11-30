@@ -20,6 +20,7 @@ Route::group(['middleware' => 'web', 'namespace' => 'Home'], function () {
 
 
     Route::post('/supp/index', 'SuppController@index');   //测试
+    Route::post('/supp/test', 'SuppController@test');   //测试
 
 
 
