@@ -23,6 +23,8 @@ Route::group(['middleware' => 'web', 'namespace' => 'Home'], function () {
     Route::post('/supp/test', 'SuppController@test');   //测试
 
 
+    Route::post('/websocket/index', 'WebsocketController@index');   //websocket
+
 
 
     Route::get('/supp/suppList', 'SuppController@suppList');                  //商家管理
