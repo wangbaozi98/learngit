@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">内容</label>
                                     <div class="col-sm-4">
-                                        <textarea name="supp_desc_cn" class="form-control wait-send" rows="3"></textarea>
+                                        <textarea name="supp_desc_cn" class="form-control" id = "wait-send" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>
