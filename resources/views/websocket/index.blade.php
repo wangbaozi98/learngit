@@ -105,7 +105,7 @@
         var room_id = $('#room_id').val();
         var user_id = $('#user_id').val();
 
-        ws = new WebSocket("ws://127.0.0.1:9502");
+        ws = new WebSocket("ws://118.25.22.231:9502");
         ws.onopen = function (evt) {
 
 
