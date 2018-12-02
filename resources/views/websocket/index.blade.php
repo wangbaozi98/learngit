@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="button" class="btn btn-info col-lg-offset-2" id="send"  onclick="websocket_send()">提交</button><br/><br/><br/><br/>
+                                <button type="button" class="btn btn-info col-lg-offset-2" id="send">提交</button><br/><br/><br/><br/>
                                 <div class="content">
                                 </div>
                             </div>
