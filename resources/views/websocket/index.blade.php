@@ -63,13 +63,15 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">内容</label>
                                     <div class="col-sm-4">
-                                        <textarea name="supp_desc_cn" class="form-control" rows="3"></textarea>
+                                        <textarea name="supp_desc_cn" class="form-control wait-send" rows="3"></textarea>
                                     </div>
                                 </div>
-
                             </div>
+
                             <div class="box-footer">
-                                <button type="button" class="btn btn-info col-lg-offset-2" id="submit_btn"  onclick="submit_socket()">提交</button><br/><br/><br/><br/>
+                                <button type="button" class="btn btn-info col-lg-offset-2" id="send"  onclick="send()">提交</button><br/><br/><br/><br/>
+                                <div class="content">
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -118,83 +120,65 @@
             console.log(data);
             ws.send(JSON.stringify(data));
         };
+
+        ws.onclose = function () {
+            //    发送房间号相关信息，以识别connect id
+            var data = {
+                room_id: room_id,
+                user_id: user_id,
+                type: 'close'
+            };
+            ws.send(JSON.stringify(data));
+        };
+
+
+        // 当有消息时根据消息类型显示不同信息
+        ws.onmessage = function (evt) {
+            console.log(evt);
+            var data = JSON.parse(evt.data);
+            console.log(data);
+            // //判断是join还是message
+            // if (data.type == 'message') {
+            //     if (data.user.id == currUser) {
+            //         $('.content').append('<div class="clearfix"></div> <div class="chat-right"> <img src="' + default_avatar + '" alt="" class="avatar pull-right"> <div class="pull-right"> <span class="username username-right">' + data.user.name + '</span> <br> <div class="content-span">' + data.message + '</div> </div> </div>');
+            //     } else {
+            //         $('.content').append('<div class="clearfix"></div> <div class="chat-left"> <img src="' + default_avatar + '" alt="" class="avatar pull-left"> <div class="pull-left"> <span class="username username-left">' + data.user.name + '</span> <br> <div class="content-span">' + data.message + '</div> </div> </div>');
+            //     }
+            // } else if (data.type == 'join') {
+            //     $('.all').text(data.message.all);
+            //     $('.online').text(data.message.online);
+            //     $('.content').append('<span class="joined">' + data.user.name + '加入了房间</span>');
+            // } else if (data.type == 'leave') {
+            //     $('.all').text(data.message.all);
+            //     $('.online').text(data.message.online);
+            //     $('.content').append('<span class="joined">' + data.user.name + '离开了房间</span>');
+            // }
+            //
+            // //滚到底部
+            // setTimeout("changeHight()", 5);
+        };
+
+
+        ws.onerror = function () {
+            console.log("出现错误");
+        };
+
     });
 
-    function submit_socket () {
-        $('#submit_btn').attr('disabled',true);
-        $.ajax({
-            url : '/supp/suppEdit',
-            data : $("#supp_edit").serialize(),
-            type : 'post',
-            dataType : 'json',
-            success : function(result){
-                if(result.code == '0200'){
-                    layer.msg(result.msg, {icon: 1});
-                    location.href = '/supp/suppList';
-                }else{
-                    layer.msg(result.msg, {icon: 2});
-                    $('#submit_btn').attr('disabled',false);
-                    return false;
-                }
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                layer.closeAll('loading');
-                console.log(XMLHttpRequest);
-                console.log(textStatus);
-                console.log(errorThrown);
-                console.log('网络异常，请刷新后重试！');
-                layer.msg('网络异常，请刷新后重试！', {icon: 2});
-                $('#submit_btn').attr('disabled',false);
-            }
-        });
+
+    function send () {
+        var data = {
+            'message': $('#wait-send').val(),
+            'user_id': $('#user_id').val(),
+            'room_id': $('#room_id').val(),
+            'type': 'message'
+        };
+        ws.send(JSON.stringify(data));
+        //清空数据
+        $('#wait-send').val('');
     }
 
 
-    $(function () {
-        //上传图片
-        $('#fileUploader').change(function (event) {
-            var uploadFiles = $(this).prop('files');
-            var fileLen = uploadFiles.length;
-            if (fileLen == 0) {
-                return;
-            }
-            actUpload(uploadFiles[0]);
-        });
-
-        function actUpload(inputFile) {
-            var exp = /.jpg$|.gif$|.png$|.jpeg$|.bmp$|.JPG$/;
-            if (exp.exec(inputFile.name) === null) {
-                layer.msg('图片格式不合法', {icon: 2});
-                return;
-            }
-            insertImage(inputFile);
-        }
-
-        function insertImage(imgData) {
-            var url = '/common/upload';
-            var postData = new FormData();
-            postData.append('imgFile', imgData);
-            postData.append('file_type', 'supp');
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: postData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                success: function (data) {
-                    if (data.code == '0200') {
-                        var imgUrl = data.payload;
-                        $("#supp_logo").val(imgUrl);
-                        $("#goods_img").attr("src", imgUrl);
-                    } else {
-                        layer.msg(data.msg, {icon: 2});
-                    }
-                }
-            });
-        }
-    });
 </script>
 
 </body>
