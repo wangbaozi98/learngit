@@ -23,7 +23,7 @@ Route::group(['middleware' => 'web', 'namespace' => 'Home'], function () {
     Route::post('/supp/test', 'SuppController@test');   //测试
 
 
-    Route::post('/websocket/index', 'WebsocketController@index');   //websocket
+    Route::any('/websocket/index', 'WebsocketController@index');   //websocket
 
 
 
