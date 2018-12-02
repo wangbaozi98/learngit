@@ -107,12 +107,15 @@
 
         ws = new WebSocket("ws://127.0.0.1:9502");
         ws.onopen = function (evt) {
+
+
 //    发送房间号相关信息，以识别connect id
             var data = {
                 room_id: room_id,
                 user_id: user_id,
                 type: 'connect'
             };
+            console(data);
             ws.send(JSON.stringify(data));
         };
     });

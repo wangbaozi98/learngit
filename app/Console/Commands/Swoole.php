@@ -74,6 +74,8 @@ class Swoole extends Command
         $ws = new \swoole_websocket_server(config('swoole.host'), config('swoole.port'));
         $ws->on('open', function ($ws, $request) {
 // todo something
+
+            echo 'open is start';
             var_dump($request);
         });
         //监听WebSocket消息事件
