@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="button" class="btn btn-info col-lg-offset-2" id="send"  onclick="send()">提交</button><br/><br/><br/><br/>
+                                <button type="button" class="btn btn-info col-lg-offset-2" id="send"  onclick="websocket_send()">提交</button><br/><br/><br/><br/>
                                 <div class="content">
                                 </div>
                             </div>
@@ -163,20 +163,23 @@
             console.log("出现错误");
         };
 
+
+        //发送信息
+        $('#send').click(function () {
+            var data = {
+                'message': $('#wait-send').val(),
+                'user_id': $('#user_id').val(),
+                'room_id': $('#room_id').val(),
+                'type': 'message'
+            };
+            ws.send(JSON.stringify(data));
+            //清空数据
+            $('#wait-send').val('');
+        });
+
+
     });
 
-
-    function send () {
-        var data = {
-            'message': $('#wait-send').val(),
-            'user_id': $('#user_id').val(),
-            'room_id': $('#room_id').val(),
-            'type': 'message'
-        };
-        ws.send(JSON.stringify(data));
-        //清空数据
-        $('#wait-send').val('');
-    }
 
 
 </script>
