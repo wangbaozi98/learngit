@@ -115,7 +115,7 @@
                 user_id: user_id,
                 type: 'connect'
             };
-            console(data);
+            console.log(data);
             ws.send(JSON.stringify(data));
         };
     });
