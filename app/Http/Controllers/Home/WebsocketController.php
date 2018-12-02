@@ -35,7 +35,7 @@ class WebsocketController extends Controller
 
         $info = [
             'room_id'  => empty($params['room_id']) ? 11 : $params['room_id'],
-            'user_id'  => empty($params['user_id']) ? 55 : $params['user_id'],
+            'user_id'  => empty($params['user_id']) ? 1 : $params['user_id'],
         ];
 
         return view('websocket.index')->with([

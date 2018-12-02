@@ -124,16 +124,16 @@ class Swoole extends Command
             $room_id = Redis::hget('room', $fd);
             echo $fd.'----'.$room_id;
             Redis::zrem("room:{$room_id}", $fd);
-            $ws->push(1, "kiki_{$fd} is leave");
+            //$ws->push(1, "kiki_{$fd} is leave");
 
-//            $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
-//            Redis::zrem("room:{$room_id}", $fd);
-//            $memberInfo = [
-//                'online' => Redis::zcard("room:{$room_id}"),
-//                'all' => $this->room->where(['room_id' => $room_id, 'status' => 0])->count() + 1
-//            ];
-//            $this->sendAll($ws, $room_id, $user_id, $memberInfo,
-//                'leave');
+            $user_id = intval(Redis::zscore("room:{$room_id}", $fd));
+            Redis::zrem("room:{$room_id}", $fd);
+            $memberInfo = [
+                'online' => Redis::zcard("room:{$room_id}"),
+                //'all' => $this->room->where(['room_id' => $room_id, 'status' => 0])->count() + 1
+            ];
+            $this->sendAll($ws, $room_id, $user_id, $memberInfo,
+                'leave');
         });
         $ws->start();
     }
@@ -169,8 +169,14 @@ class Swoole extends Command
             'user' => $user
         ]);
         $members = Redis::zrange("room:{$room_id}" , 0 , -1);
-        foreach ($members as $fd) {
-            $ws->push($fd, $message);
+        if (!empty($members)){
+            foreach ($members as $fd) {
+                $ws->push($fd, $message);
+            }
+        } else {
+            echo 'send is empty!!!';
         }
+
+
     }
 }
