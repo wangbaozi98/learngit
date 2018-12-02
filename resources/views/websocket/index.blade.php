@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">内容</label>
                                     <div class="col-sm-4">
-                                        <textarea name="supp_desc_cn" class="form-control" rows="3">{{ $supp_info['supp_desc_cn'] }}</textarea>
+                                        <textarea name="supp_desc_cn" class="form-control" rows="3"></textarea>
                                     </div>
                                 </div>
 
